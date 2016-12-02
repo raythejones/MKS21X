@@ -1,5 +1,5 @@
-clone
-add 
-commit
-push
+clone - 
+add - 
+commit - 
+push - 
 
