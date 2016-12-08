@@ -1,3 +1,5 @@
+import java.util.Math
+
 public class Barcode implements Comparable<Barcode>{
 // instance variables
    private String _zip;
@@ -9,14 +11,14 @@ To make it easier on myself:
 
 1  :::||   
 2  ::|:|
-3  ::||:
-4  :|::|
-5  :|:|:
-6  :||::
-7  |:::|
-8  |::|:
-9  |:|::
-0  ||:::   
+3  ::||: 
+ :|::|
+ :|:|:
+ :||::
+ |:::|
+ |::|:
+ |:|::
+ ||:::   
 
     */
     
@@ -26,8 +28,9 @@ To make it easier on myself:
 //               or zip contains a non digit
 //               _zip and _checkDigit are initialized.
   public Barcode(String zip) {
-      String[] array codeKey = {:::||,  ::|:|, };
+      String[] array codeKey = {"||:::", ":::||", "::|:|", "::||:", ":|::|", ":|:|:", ":||::", "|:::|", "|::|":, "|:|::"};
 	  String output;
+	  int unitPlace = 0;
       for(x=0;x<5;x++){
 	  
 	  _checkDigit += parseInt(zip.charAt(x));
@@ -36,16 +39,23 @@ To make it easier on myself:
       _checkDigit = _checkDigit % 10;
 
       for(x=0;x<5;x++){
-	  output += codeKey[parseInt(zip.charAt(x+1))];
-      }
+	  for(x=4;x>-1;x--){
+	      int unitPlace = Math.pow(10,x);
+		  output += (codeKey[parseInt(zip.charAt(x))] * unitPlace);
+	  }}
 
       
   }
     
 // postcondition: Creates a copy of a bar code.
   public Barcode clone(){
-      
-
+      int outputCopy;
+      int unitPlace = 0
+      for(x=0;x<5;x++){
+	  for(x=4;x>-1;x--){
+	      unitPlace = Math.pow(10,x);
+		  output += (codeKey[parseInt(zip.charAt(x))] * unitPlace);
+	  }}
 
   }
 
