@@ -1,4 +1,4 @@
-import java.util.Math
+import java.util.Math;
 
 public class Barcode implements Comparable<Barcode>{
 // instance variables
@@ -28,7 +28,12 @@ To make it easier on myself:
 //               or zip contains a non digit
 //               _zip and _checkDigit are initialized.
   public Barcode(String zip) {
-      String[] array codeKey = {"||:::", ":::||", "::|:|", "::||:", ":|::|", ":|:|:", ":||::", "|:::|", "|::|":, "|:|::"};
+      	_zip = zip;
+	_checkDigit = 0;
+	if (zip.length() != 5){
+	    throw new IllegalArgumentException ("The input is not the right length.");
+	}
+	String[] array codeKey = {"||:::", ":::||", "::|:|", "::||:", ":|::|", ":|:|:", ":||::"; "|:::|", "|::|:", "|:|::",};
 	  String output;
 	  int unitPlace = 0;
       for(x=0;x<5;x++){
@@ -44,9 +49,9 @@ To make it easier on myself:
 		  output += (codeKey[parseInt(zip.charAt(x))] * unitPlace);
 	  }}
 
-      
+      _zip = output;
   }
-    
+
 // postcondition: Creates a copy of a bar code.
   public Barcode clone(){
       int outputCopy;
@@ -65,14 +70,17 @@ To make it easier on myself:
 
 
   }
+    */
 
 //postcondition: format zip + check digit + Barcode 
 //ex. "084518  |||:::|::|::|::|:|:|::::|||::|:|"      
   public String toString(){
+	return "|" + _zip + _checkDigit + "|";
 
 
 
-  }
+  }    /*
+
 
 // postcondition: compares the zip + checkdigit, in numerical order. 
   public int compareTo(Barcode other){
@@ -81,4 +89,11 @@ To make it easier on myself:
       
   }
     */
+
+        public static void main(String[]args){
+	Barcode a = new Barcode("08451");
+	System.out.println(a.toString());
+	Barcode b = new Barcode ("12345");
+	System.out.println(b.toString());
+	}
 }
