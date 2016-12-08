@@ -26,21 +26,30 @@ To make it easier on myself:
 //               or zip contains a non digit
 //               _zip and _checkDigit are initialized.
   public Barcode(String zip) {
-      for(x=0,x<5,x++){
-	  _zip += parseInt(charAt(zip.charAt(x)));
+      String[] array codeKey = {:::||,  ::|:|, };
+	  String output;
+      for(x=0;x<5;x++){
+	  
+	  _checkDigit += parseInt(zip.charAt(x));
 
       }
+      _checkDigit = _checkDigit % 10;
 
+      for(x=0;x<5;x++){
+	  output += codeKey[parseInt(zip.charAt(x+1))];
+      }
+
+      
   }
-
+    
 // postcondition: Creates a copy of a bar code.
   public Barcode clone(){
-
+      
 
 
   }
 
-
+    /*
 // postcondition: computes and returns the check sum for _zip
   private int checkSum(){
 
@@ -55,12 +64,11 @@ To make it easier on myself:
 
   }
 
-
 // postcondition: compares the zip + checkdigit, in numerical order. 
   public int compareTo(Barcode other){
 
 
       
   }
-    
+    */
 }
