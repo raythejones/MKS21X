@@ -33,36 +33,25 @@ To make it easier on myself:
 	if (zip.length() != 5){
 	    throw new IllegalArgumentException ("The input is not the right length.");
 	}
-	String[] array codeKey = {"||:::", ":::||", "::|:|", "::||:", ":|::|", ":|:|:", ":||::"; "|:::|", "|::|:", "|:|::",};
-	  String output;
-	  int unitPlace = 0;
-      for(x=0;x<5;x++){
+	String codedZip = "";
+	String[] codeKey = {"||:::", ":::||", "::|:|", "::||:", ":|::|", ":|:|:", ":||::", "|:::|", "|::|:", "|:|::",};
+      for(int x=0;x<5;x++){
 	  
 	  _checkDigit += parseInt(zip.charAt(x));
 
       }
       _checkDigit = _checkDigit % 10;
 
-      for(x=0;x<5;x++){
-	  for(x=4;x>-1;x--){
-	      int unitPlace = Math.pow(10,x);
-		  output += (codeKey[parseInt(zip.charAt(x))] * unitPlace);
-	  }}
+      for(int x=0;x<5;x++){
+		  codedZip += (codeKey[parseInt(zip.charAt(x))]);
+      }
 
-      _zip = output;
+      _zip = codedZip;
   }
 
 // postcondition: Creates a copy of a bar code.
   public Barcode clone(){
-      int outputCopy;
-      int unitPlace = 0
-      for(x=0;x<5;x++){
-	  for(x=4;x>-1;x--){
-	      unitPlace = Math.pow(10,x);
-		  output += (codeKey[parseInt(zip.charAt(x))] * unitPlace);
-	  }}
-
-  }
+      String codedCopy = _zip;	  }
 
     /*
 // postcondition: computes and returns the check sum for _zip
