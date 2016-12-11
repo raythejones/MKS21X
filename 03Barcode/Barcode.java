@@ -29,13 +29,7 @@ public class Barcode implements Comparable<Barcode>{
 	String codedZip = "";
 	
 	//CHECKDIGIT
-	_checkDigit = checkSum() % 10;
- 
-
-
-
-	
-	
+	_checkDigit = checkSum() % 10;	
   }
     
  
@@ -43,34 +37,79 @@ public class Barcode implements Comparable<Barcode>{
   public Barcode clone(){
      
       String ans = _zip;
-
-   
 	      Barcode cloned = new Barcode(ans);
 	      return cloned;
-
-
-	      
   }
 
- 
+
       public String zip() {
       return _zip;
   }
       public int checkDigit() {
       return _checkDigit;
   }
+    
 // postcondition: computes and returns the check sum for _zip
-  private  int checkSum(){
+  private int checkSum(){
             int ans = 0;
 	    for(int i=0;i<5;i++){
 	  int output = Integer.parseInt(_zip.substring(i,i+1));
-	  ans += output;
+ 	  ans += output;
   }
       return ans;
 
   }
-   
-    
+
+
+    public static String toCode(String zip){
+	int _checkDigit = 0;
+
+	int ans = 0;
+	    for(int i=0;i<5;i++){
+	  int output = Integer.parseInt(zip.substring(i,i+1));
+ 	  ans += output;
+  }
+
+      _checkDigit = ans % 10;
+
+      String tempZip = zip;
+      String codedZip = "";
+      	 String[] codeKey = {"||:::", ":::||", "::|:|", "::||:", ":|::|", ":|:|:", ":||::", "|:::|", "|::|:", "|:|::",};
+
+
+	 for(int i=0;i<5;i++){
+	  int output = Integer.parseInt(tempZip.substring(i,i+1));
+	  codedZip += codeKey[output];
+	} 
+	codedZip += codeKey[_checkDigit];
+
+	
+      return "|" + codedZip  + "|";		
+	}
+
+
+
+       public static String toZip(String code) {
+           if (code.length() != 32) {
+	   throw new IllegalArgumentException("Invalid length");
+       }
+       if (code.charAt(0) != '|' || code.charAt(31) != '|') {
+	   throw new IllegalArgumentException("Invalid guardrails");
+       }
+       for (int i = 0 ; i < code.length() ; i ++) {
+	   if (code.charAt(i) != ':' && code.charAt(i) != '|') {
+	       throw new IllegalArgumentException("non-barcode character");
+	   }
+       }if (code.length() != 32) {
+	   throw new IllegalArgumentException("Invalid length");
+       }
+
+
+
+
+
+
+	   
 //postcondition: format zip + check digit + Barcode 
 //ex. "084518  |||:::|::|::|::|:|:|::::|||::|:|"      
   public String toString(){
@@ -87,37 +126,23 @@ public class Barcode implements Comparable<Barcode>{
 
 	
       return "|" + codedZip  + "|";
-
-
-
   }    
-/*
 
-// postcondition: compares the zip + checkdigit, in numerical order. 
-  public int compareTo(Barcode other){
-
-
-      
-  }
-    */
-
-      
 
 public int compareTo(Barcode other){
-      int z = Integer.parseInt(_zip + _checkDigit);
-      int o = Integer.parseInt(other.zip() + other.checkDigit());
-      if (z < o) {
+      int x = Integer.parseInt(_zip + _checkDigit);
+      int y = Integer.parseInt(other.zip() + other.checkDigit());
+      if (x < y) {
 	  return -1;
       }
-      if (z > o) {
+      if (x > y) {
 	  return 1;
       }
       else {
 	  return 0;
       }
 }
-
-    
+ 
       public static void main(String[]args){
 	Barcode a = new Barcode("08451");
 	System.out.println(a.toString());
