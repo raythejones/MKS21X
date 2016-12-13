@@ -25,26 +25,20 @@ public class Barcode implements Comparable<Barcode>{
 	    catch (NumberFormatException e) {
 	    throw new IllegalArgumentException("One or more characters in the zipcode is not a digit.");
        }
-	    
-	String codedZip = "";
-	
-	//CHECKDIGIT
-	_checkDigit = checkSum() % 10;	
   }
     
  
 // postcondition: Creates a copy of a bar code.
   public Barcode clone(){
-     
       String ans = _zip;
 	      Barcode cloned = new Barcode(ans);
 	      return cloned;
   }
 
-
       public String zip() {
       return _zip;
   }
+    
       public int checkDigit() {
       return _checkDigit;
   }
@@ -60,22 +54,36 @@ public class Barcode implements Comparable<Barcode>{
 
   }
 
-
-    public static String toCode(String zip){
-	int _checkDigit = 0;
-
-	int ans = 0;
-	    for(int i=0;i<5;i++){
+  private static int checkSum(String zip){
+            int ans = 0;
+	    for(int i=0;i<zip.length();i++){
 	  int output = Integer.parseInt(zip.substring(i,i+1));
  	  ans += output;
   }
+      return ans;
 
-      _checkDigit = ans % 10;
+  }
+    
+    public static String toCode(String zip){
+	int _checkDigit = 0;
+	int almostCheck = 0;
+	if(zip.length() != 5){
+	    throw new IllegalArgumentException("The input zip is the wrong length.");}
+	if(notDigit(zip)){
+	    throw new IllegalArgumentException("The input zip contains a non-integer.");}
+
+	
+	
+	    for(int i=0;i<5;i++){
+	  int output = Integer.parseInt(zip.substring(i,i+1));
+ 	  almostCheck += output;
+  }
+ 
+      _checkDigit = almostCheck % 10;
 
       String tempZip = zip;
       String codedZip = "";
       	 String[] codeKey = {"||:::", ":::||", "::|:|", "::||:", ":|::|", ":|:|:", ":||::", "|:::|", "|::|:", "|:|::",};
-
 
 	 for(int i=0;i<5;i++){
 	  int output = Integer.parseInt(tempZip.substring(i,i+1));
@@ -86,53 +94,90 @@ public class Barcode implements Comparable<Barcode>{
 	
       return "|" + codedZip  + "|";		
 	}
-
     
+
+ private static boolean notDigit(String testZip){
+     for (int i=0; i<5; i++) {
+    		if (testZip.charAt(i) > '9' || testZip.charAt(i) < '0') {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+     private static boolean notBarcode(String testBC){
+	 for (int i=0; i<testBC.length(); i++) {
+    		if (testBC.charAt(i) != ':' && testBC.charAt(i) != '|') {
+    			return true;
+    		}
+		else{}
+    	}
+    	return false;
+    }
+
+  private static int arraySearch(String element, String[] array){
+    	for (int x=0; x<array.length; x++){
+    		if (array[x].equals(element)){
+    			return x;
+    		}
+    	}
+
+    	return -1;
+  }
+    
+
 public static String toZip(String code){
+    String zip = "";
 	if(code.length() != 32) {
 	    throw new IllegalArgumentException("The input barcode is not the right length.");
 	}
 	if(code.charAt(0) != '|' || code.charAt(31) != '|') {
-	    throw new IllegalArgumentException("One or more of the guardrails is formatted improperly");
+	    throw new IllegalArgumentException("One or both of the guardrails is formatted improperly");
 	}
-	String output = "";
-	try {
-	    for(int x= 1; x<31; x++){
-		switch(code.substring(x,x+5)) {
-		case "||:::": output += "0";
-		    break;
-		case ":::||": output += "1";
-		    break;
-		case "::|:|": output += "2";
-		    break;
-		case "::||:": output += "3";
-		    break;
-		case ":|::|": output += "4";
-		    break;
-		case ":|:|:": output += "5";
-		    break;
-		case ":||::": output += "6";
-		    break;
-		case "|:::|": output += "7";
-		    break;
-		case "|::|:": output += "8";
-		    break;
-		case "|:|::": output += "9";
-		    break;
-		}
-	    }
-	}catch(NumberFormatException e) {
-	    throw new IllegalArgumentException("");
-	}
-	String zipcode = output.substring(0,6);
-	String check = "" + output.charAt(6);
-	if(!zipcode.equals(check)) {
-	    throw new IllegalArgumentException("");
-	}
-	return zipcode;
+	if(notBarcode(code)){	    throw new IllegalArgumentException("The input barcode contains a non-barcode character.");
 }
+	else{
+	    int i = 1;
+	    while (i < code.length()-5){
+		String codeNumbers = code.substring(i,i+5);
+		switch(codeNumbers){
+		case  ":::||": zip += 1;
+		    break;
+		case "::|:|": zip += 2;
+		    break;
+		case "::||:": zip += 3;
+		    break;
+		case ":|::|": zip += 4;
+		    break;
+		case ":|:|:": zip += 5;
+		    break;
+		case ":||::": zip += 6;
+		    break;
+		case "|:::|": zip += 7;
+		    break;
+		case "|::|:": zip += 8;
+		    break;
+		case "|:|::": zip += 9;
+		    break;
+		case "||:::": zip += 0;
+		    break;
+		default: throw new IllegalArgumentException("There may be a pattern mismatch in the zipcode.");
+		    // break;
+		}
+        	i += 5;
+	    }
+	}
+	if (!zip.substring(5).equals(checkSum(zip.substring(0,5)) % 10 + "")){
+	    throw new IllegalArgumentException("The checkDigit for this barcode is wrong");
+	}
+	else{
+	    return zip.substring(0,5);
+	}
+    }
 
 
+
+	
 
 
 
@@ -170,91 +215,8 @@ public int compareTo(Barcode other){
 	  return 0;
       }
 }
- 
-      public static void main(String args[]){
-	//INITIAL TESTS
-	System.out.println("\nINITIAL TESTS");
-	Barcode a = new Barcode("08451");
-	Barcode b = new Barcode("99999");
-	Barcode c = new Barcode("11111");
-	System.out.println(a); //084518 |||:::|::|::|::|:|:|::::|||::|:|
-	System.out.println(a.toString().compareTo("084518 |||:::|::|::|::|:|:|::::|||::|:|")); //0
-	System.out.println(a.compareTo(a)); //0
-	System.out.println(b.compareTo(a)); //9
-	System.out.println(c.compareTo(a)); //1
-		
-	//more tests for second part of the lab:
+    
 
-	//
-	//CONSTRUCTOR TESTS
-	//
-	
-	System.out.println("\nCONSTRUCTOR TESTS");
-	System.out.println(new Barcode("99999"));
-	try{
-	    new Barcode("024df");
-	}catch(IllegalArgumentException e){
-	    e.printStackTrace(); //zip contains a non digit
-	}
-	
-	try{
-	    new Barcode("010101010");
-	}catch(IllegalArgumentException e){
-	    e.printStackTrace(); //zip is not correct length
-	}
-	
-	//
-	//toCode TESTS
-	//
-	
-	System.out.println("\ntoCode TESTS");
-	System.out.println(Barcode.toCode("99999"));
-	//Barcode b = new Barcode("99999"); //already done in init tests
-	String zipOfB = (b.toString()).substring(7); // slices off begin zip part
-	System.out.println(Barcode.toCode("99999").compareTo(zipOfB)); //0
 
-	//exceptions for toCode()
-	try{
-	    Barcode.toCode("222222");
-	}catch(IllegalArgumentException e){
-	    e.printStackTrace(); //given zip is not correct length
-	}
-	
-	try{
-	    Barcode.toCode("eeeef");
-	}catch(IllegalArgumentException e){
-	    e.printStackTrace(); //given zip contains a non digit
-	}
 
-	//
-	//toZip TESTS
-	//
-	System.out.println("\ntoZip TESTS");
-	System.out.println(Barcode.toZip(Barcode.toCode("99999"))); //99999
-
-	//exceptions for toZip()
-	try{
-	    Barcode.toZip("|:|");
-	}catch(IllegalArgumentException e){
-	    e.printStackTrace();//not correct length
-	}
-
-	try{
-	    Barcode.toZip("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-	}catch(IllegalArgumentException e){
-	    e.printStackTrace();//invalid guard rails
-	}
-
-	try{
-	    Barcode.toZip("|eeeeeeeeeeeeeeeeeeeeeeeeeeeeee|");
-	}catch(IllegalArgumentException e){
-	    e.printStackTrace();//invalid barcode characters
-	}
-
-	try{
-	    Barcode.toZip("|||:::|::|::|::|:|:||||:|||::|:|");
-	}catch(IllegalArgumentException e){
-	    e.printStackTrace();//encoded int invalid
-	}
-      }
 }
