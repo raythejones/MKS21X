@@ -1,3 +1,4 @@
+import java.util.*;
 public class Sorts{
   /**EDIT THIS METHOD TO MATCH YOUR NAME 
   */
@@ -27,7 +28,32 @@ public class Sorts{
       }
  }
 
+public static int[] insertionSort(int[] data){
+      int start = 0;
+      int[] alreadySorted = {};
+      while(start < data.length-1){
+	  for(int x=start+1; x<data.length; x++){
+	      if(data[start] < data[x]){
+		  start++;
+		  if(x == data.length){
+		      alreadySorted = data;
+		  }
+	      }
+	      else{
+		  alreadySorted = Arrays.copyOfRange(data,0,x);
+		      
+	      }
+	  }
+      
+      }
+      return alreadySorted;
+}
     
-    public static void main(String[]args){
-    }
+
+
+public static void main(String[] args) {
+    int[] a = {3, 4, 5, 6, 7, 8, 1, 2, 3,};
+	System.out.println(insertionSort(a));
+}
+
 }
