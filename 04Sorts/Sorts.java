@@ -63,7 +63,6 @@ public class Sorts{
 	for(int x=0; x<data.length; x++){
 	    output += data[x];
 	    output += ",";
-	    
 	}
 	output += "]";
 	}
