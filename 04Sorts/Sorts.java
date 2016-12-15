@@ -45,10 +45,31 @@ public class Sorts{
 		}
 	    }
 	}
+	}
+
+    public static void bubbleSort(int[] data){
+	int len = data.length;
+	for(int n=len-1;n>1;n--){
+	    for(int x=0;x<n+1;x++){
+		
+	    }
+	}
+	    
     }
 
 
-public static void main(String [] args) {
+    public static void print(int[] data){
+	String output = "[";
+	for(int x=0; x<data.length; x++){
+	    output += data[x];
+	    output += ",";
+	    
+	}
+	output += "]";
+	}
+    
+    
+    public static void main(String [] args) {
 }
 
 }
