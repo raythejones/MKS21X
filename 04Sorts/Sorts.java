@@ -28,32 +28,27 @@ public class Sorts{
       }
  }
 
-public static int[] insertionSort(int[] data){
-      int start = 0;
-      int[] alreadySorted = {};
-      while(start < data.length-1){
-	  for(int x=start+1; x<data.length; x++){
-	      if(data[start] < data[x]){
-		  start++;
-		  if(x == data.length){
-		      alreadySorted = data;
-		  }
-	      }
-	      else{
-		  alreadySorted = Arrays.copyOfRange(data,0,x);
-		      
-	      }
-	  }
-      
-      }
-      return alreadySorted;
-}
-    
+
+        public static void insertionSort(int[] data){
+	int temp;
+	for(int x=0; x<data.length - x1; x++){
+	    if(!(data[x] <= data[x + 1])){
+		temp = data[x + 1];
+		for(int y = 0; y <= i; y++){
+		    if(temp <= data[y]){
+			for(int z = x + 1; z > y; z = z - 1){
+			    data[z] = data[z - 1];
+			}
+			data[y] = temp;
+			break;
+		    }
+		}
+	    }
+	}
+    }
 
 
-public static void main(String[] args) {
-    int[] a = {3, 4, 5, 6, 7, 8, 1, 2, 3,};
-	System.out.println(insertionSort(a));
+public static void main(String [] args) {
 }
 
 }
